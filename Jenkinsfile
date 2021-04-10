@@ -5,6 +5,8 @@ pipeline {
           stage('SonarQube') {
                     steps {
                         echo 'SonarQube..'
+
+                        sh 'pwd;'
                     }
                 }
 
