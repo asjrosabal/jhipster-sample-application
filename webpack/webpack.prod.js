@@ -25,7 +25,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         main: './src/main/webapp/app/app.main'
     },
     output: {
-        path: utils.root('target/classes/static/'),
+        path: utils.root('build/resources/main/static/'),
         filename: 'app/[name].[hash].bundle.js',
         chunkFilename: 'app/[id].[hash].chunk.js'
     },
@@ -36,7 +36,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         },
         {
             test: /\.scss$/,
-            use: ['to-string-loader', 'css-loader', {
+            use: ['to-string-loader', 'css-loader', 'postcss-loader', {
                 loader: 'sass-loader',
                 options: { implementation: sass }
             }],
@@ -104,8 +104,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                         inline: true,
                         join_vars: true,
                         ecma: 6,
-                        module: true,
-                        toplevel: true
+                        module: true
                     },
                     output: {
                         comments: false,
@@ -131,8 +130,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         }),
         new MomentLocalesPlugin({
             localesToKeep: [
-                    'en',
-                    'es'
+                    'es',
+                    'en'
                     // jhipster-needle-i18n-language-moment-webpack - JHipster will add/remove languages in this array
                 ]
         }),
@@ -152,6 +151,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         new WorkboxPlugin.GenerateSW({
           clientsClaim: true,
           skipWaiting: true,
+          exclude: [/swagger-ui/]
         })
     ],
     mode: 'production'

@@ -1,6 +1,6 @@
-# SampleApplication
+# devsecops
 
-This application was generated using JHipster 6.3.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.3.1](https://www.jhipster.tech/documentation-archive/v6.3.1).
+This application was generated using JHipster 6.6.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.6.0](https://www.jhipster.tech/documentation-archive/v6.6.0).
 
 ## Development
 
@@ -19,7 +19,7 @@ We use npm scripts and [Webpack][] as our build system.
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
-    ./mvnw
+    ./gradlew -x webpack
     npm start
 
 Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
@@ -30,7 +30,7 @@ The `npm run` command will list all of the scripts available to run for this pro
 
 ### PWA Support
 
-JHipster ships with PWA (Progressive Web App) support, and it's disabled by default. One of the main components of a PWA is a service worker.
+JHipster ships with PWA (Progressive Web App) support, and it's turned off by default. One of the main components of a PWA is a service worker.
 
 The service worker initialization code is commented out by default. To enable it, uncomment the following code in `src/main/webapp/index.html`:
 
@@ -63,7 +63,7 @@ Edit [src/main/webapp/app/vendor.ts](src/main/webapp/app/vendor.ts) file:
 import 'leaflet/dist/leaflet.js';
 ```
 
-Edit [src/main/webapp/content/css/vendor.css](src/main/webapp/content/css/vendor.css) file:
+Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
 
 ```
 @import '~leaflet/dist/leaflet.css';
@@ -87,32 +87,18 @@ will generate few files:
     create src/main/webapp/app/my-component/my-component.component.ts
     update src/main/webapp/app/app.module.ts
 
-### Doing API-First development using openapi-generator
-
-[OpenAPI-Generator]() is configured for this application. You can generate API code from the `src/main/resources/swagger/api.yml` definition file by running:
-
-```bash
-./mvnw generate-sources
-```
-
-Then implements the generated delegate classes with `@Service` classes.
-
-To edit the `api.yml` definition file, you can use a tool such as [Swagger-Editor](). Start a local instance of the swagger-editor using docker by running: `docker-compose -f src/main/docker/swagger-editor.yml up -d`. The editor will then be reachable at [http://localhost:7742](http://localhost:7742).
-
-Refer to [Doing API-First development][] for more details.
-
 ## Building for production
 
 ### Packaging as jar
 
-To build the final jar and optimize the SampleApplication application for production, run:
+To build the final jar and optimize the devsecops application for production, run:
 
-    ./mvnw -Pprod clean verify
+    ./gradlew -Pprod clean bootJar
 
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
 
-    java -jar target/*.jar
+    java -jar build/libs/*.jar
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
@@ -122,13 +108,13 @@ Refer to [Using JHipster in production][] for more details.
 
 To package your application as a war in order to deploy it to an application server, run:
 
-    ./mvnw -Pprod,war clean verify
+    ./gradlew -Pprod -Pwar clean bootWar
 
 ## Testing
 
 To launch your application's tests, run:
 
-    ./mvnw verify
+    ./gradlew test integrationTest jacocoTestReport
 
 ### Client tests
 
@@ -146,21 +132,13 @@ Sonar is used to analyse code quality. You can start a local Sonar server (acces
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
+You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the gradle plugin.
 
 Then, run a Sonar analysis:
 
 ```
-./mvnw -Pprod clean verify sonar:sonar
+./gradlew -Pprod clean check jacocoTestReport sonarqube
 ```
-
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
-
-```
-./mvnw initialize sonar:sonar
-```
-
-or
 
 For more information, refer to the [Code quality page][].
 
@@ -179,7 +157,7 @@ To stop it and remove the container, run:
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw -Pprod verify jib:dockerBuild
+    ./gradlew bootJar -Pprod jibDockerBuild
 
 Then run:
 
@@ -192,13 +170,13 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 6.3.1 archive]: https://www.jhipster.tech/documentation-archive/v6.3.1
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.3.1/development/
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.3.1/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.3.1/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v6.3.1/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v6.3.1/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.3.1/setting-up-ci/
+[jhipster 6.6.0 archive]: https://www.jhipster.tech/documentation-archive/v6.6.0
+[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v6.6.0/development/
+[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v6.6.0/docker-compose
+[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v6.6.0/production/
+[running tests page]: https://www.jhipster.tech/documentation-archive/v6.6.0/running-tests/
+[code quality page]: https://www.jhipster.tech/documentation-archive/v6.6.0/code-quality/
+[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v6.6.0/setting-up-ci/
 [node.js]: https://nodejs.org/
 [yarn]: https://yarnpkg.org/
 [webpack]: https://webpack.github.io/
@@ -209,6 +187,3 @@ To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`)
 [protractor]: https://angular.github.io/protractor/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
-[openapi-generator]: https://openapi-generator.tech
-[swagger-editor]: https://editor.swagger.io
-[doing api-first development]: https://www.jhipster.tech/documentation-archive/v6.3.1/doing-api-first-development/

@@ -3,20 +3,20 @@ import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SampleApplicationTestModule } from '../../../test.module';
-import { JhiAlertErrorComponent } from 'app/shared/alert/alert-error.component';
+import { DevsecopsTestModule } from '../../../test.module';
+import { AlertErrorComponent } from 'app/shared/alert/alert-error.component';
 import { MockAlertService } from '../../../helpers/mock-alert.service';
 
 describe('Component Tests', () => {
   describe('Alert Error Component', () => {
-    let comp: JhiAlertErrorComponent;
-    let fixture: ComponentFixture<JhiAlertErrorComponent>;
+    let comp: AlertErrorComponent;
+    let fixture: ComponentFixture<AlertErrorComponent>;
     let eventManager: JhiEventManager;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [SampleApplicationTestModule, TranslateModule.forRoot()],
-        declarations: [JhiAlertErrorComponent],
+        imports: [DevsecopsTestModule, TranslateModule.forRoot()],
+        declarations: [AlertErrorComponent],
         providers: [
           JhiEventManager,
           {
@@ -25,12 +25,12 @@ describe('Component Tests', () => {
           }
         ]
       })
-        .overrideTemplate(JhiAlertErrorComponent, '')
+        .overrideTemplate(AlertErrorComponent, '')
         .compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(JhiAlertErrorComponent);
+      fixture = TestBed.createComponent(AlertErrorComponent);
       comp = fixture.componentInstance;
       eventManager = fixture.debugElement.injector.get(JhiEventManager);
     });
@@ -38,22 +38,22 @@ describe('Component Tests', () => {
     describe('Error Handling', () => {
       it('Should display an alert on status 0', () => {
         // GIVEN
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: { status: 0 } });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: { status: 0 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('error.server.not.reachable');
       });
       it('Should display an alert on status 404', () => {
         // GIVEN
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: { status: 404 } });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: { status: 404 } });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('error.url.not.found');
       });
       it('Should display an alert on generic error', () => {
         // GIVEN
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: { error: { message: 'Error Message' } } });
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: { error: 'Second Error Message' } });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: { error: { message: 'Error Message' } } });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: { error: 'Second Error Message' } });
         // THEN
         expect(comp.alerts.length).toBe(2);
         expect(comp.alerts[0].msg).toBe('Error Message');
@@ -74,7 +74,7 @@ describe('Component Tests', () => {
             message: 'error.validation'
           }
         });
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: response });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('error.validation');
@@ -87,7 +87,7 @@ describe('Component Tests', () => {
           status: 400,
           error: 'Bad Request'
         });
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: response });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('Bad Request');
@@ -108,7 +108,7 @@ describe('Component Tests', () => {
             fieldErrors: [{ objectName: 'foo', field: 'minField', message: 'Min' }]
           }
         });
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: response });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('error.Size');
@@ -125,7 +125,7 @@ describe('Component Tests', () => {
             message: 'error.validation'
           }
         });
-        eventManager.broadcast({ name: 'sampleApplicationApp.httpError', content: response });
+        eventManager.broadcast({ name: 'devsecopsApp.httpError', content: response });
         // THEN
         expect(comp.alerts.length).toBe(1);
         expect(comp.alerts[0].msg).toBe('Error Message');

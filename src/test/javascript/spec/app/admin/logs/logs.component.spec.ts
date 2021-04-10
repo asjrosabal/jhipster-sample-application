@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
-import { SampleApplicationTestModule } from '../../../test.module';
+import { DevsecopsTestModule } from '../../../test.module';
 import { LogsComponent } from 'app/admin/logs/logs.component';
 import { LogsService } from 'app/admin/logs/logs.service';
 import { Log } from 'app/admin/logs/log.model';
@@ -15,7 +14,7 @@ describe('Component Tests', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [SampleApplicationTestModule],
+        imports: [DevsecopsTestModule],
         declarations: [LogsComponent],
         providers: [LogsService]
       })
@@ -37,21 +36,15 @@ describe('Component Tests', () => {
       });
       it('Should call load all on init', () => {
         // GIVEN
-        const headers = new HttpHeaders().append('link', 'link;link');
         const log = new Log('main', 'WARN');
         spyOn(service, 'findAll').and.returnValue(
-          of(
-            new HttpResponse({
-              body: {
-                loggers: {
-                  main: {
-                    effectiveLevel: 'WARN'
-                  }
-                }
-              },
-              headers
-            })
-          )
+          of({
+            loggers: {
+              main: {
+                effectiveLevel: 'WARN'
+              }
+            }
+          })
         );
 
         // WHEN
@@ -59,26 +52,22 @@ describe('Component Tests', () => {
 
         // THEN
         expect(service.findAll).toHaveBeenCalled();
-        expect(comp.loggers[0]).toEqual(jasmine.objectContaining(log));
+        expect(comp.loggers && comp.loggers[0]).toEqual(jasmine.objectContaining(log));
       });
     });
     describe('change log level', () => {
       it('should change log level correctly', () => {
         // GIVEN
         const log = new Log('main', 'ERROR');
-        spyOn(service, 'changeLevel').and.returnValue(of(new HttpResponse()));
+        spyOn(service, 'changeLevel').and.returnValue(of({}));
         spyOn(service, 'findAll').and.returnValue(
-          of(
-            new HttpResponse({
-              body: {
-                loggers: {
-                  main: {
-                    effectiveLevel: 'ERROR'
-                  }
-                }
+          of({
+            loggers: {
+              main: {
+                effectiveLevel: 'ERROR'
               }
-            })
-          )
+            }
+          })
         );
 
         // WHEN
@@ -87,7 +76,7 @@ describe('Component Tests', () => {
         // THEN
         expect(service.changeLevel).toHaveBeenCalled();
         expect(service.findAll).toHaveBeenCalled();
-        expect(comp.loggers[0]).toEqual(jasmine.objectContaining(log));
+        expect(comp.loggers && comp.loggers[0]).toEqual(jasmine.objectContaining(log));
       });
     });
   });

@@ -17,7 +17,7 @@ logging:
   level:
     ROOT: INFO
     io.github.jhipster: INFO
-    com.mycompany.myapp: INFO
+    com.devsecops.bci: INFO
 
 management:
   metrics:
@@ -31,20 +31,9 @@ spring:
       enabled: false
     livereload:
       enabled: false
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group_id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/SampleApplication?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/devsecops?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     hikari:
@@ -56,7 +45,7 @@ spring:
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     database: MYSQL
     show-sql: false
     properties:
@@ -65,13 +54,12 @@ spring:
       hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
-  data:
-    jest:
-      uri: http://localhost:9200
-  # see https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-nosql.html#boot-features-connecting-to-elasticsearch-jest
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
+      # modify batch size as necessary
+      hibernate.jdbc.batch_size: 25
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
+      hibernate.query.in_clause_parameter_padding: true
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: prod
@@ -85,7 +73,7 @@ spring:
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
-# keytool -genkey -alias sampleapplication -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# keytool -genkey -alias devsecops -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
 # https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
@@ -98,7 +86,7 @@ spring:
 #        key-store: classpath:config/tls/keystore.p12
 #        key-store-password: password
 #        key-store-type: PKCS12
-#        key-alias: sampleapplication
+#        key-alias: devsecops
 #        # The ciphers suite enforce the security by deactivating some old and deprecated SSL cipher, this list was tested against SSL Labs (https://www.ssllabs.com/ssltest/)
 #        ciphers: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_DHE_RSA_WITH_AES_128_GCM_SHA256 ,TLS_DHE_RSA_WITH_AES_256_GCM_SHA384 ,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_DHE_RSA_WITH_AES_128_CBC_SHA256,TLS_DHE_RSA_WITH_AES_128_CBC_SHA,TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,TLS_DHE_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_RSA_WITH_CAMELLIA_256_CBC_SHA,TLS_DHE_RSA_WITH_CAMELLIA_128_CBC_SHA,TLS_RSA_WITH_CAMELLIA_128_CBC_SHA
 # ===================================================================
@@ -131,7 +119,7 @@ jhipster:
         # - In the JHipster Registry (which includes a Spring Cloud Config server)
         # - In a separate `application-prod.yml` file, in the same folder as your executable JAR file
         # - In the `JHIPSTER_SECURITY_AUTHENTICATION_JWT_BASE64_SECRET` environment variable
-        base64-secret: MGY3NjdkNjE2YjkwNzhiYzU0MDI1ZjI4N2ZhZWQ2YzkxYjkxNGE2ODk4YjU1NmEyYzcyN2IyNzRlMDQ1MzlkYTg1NmU5MDQ0NzJlNzMzOGZiMjI4MWYyYWU0NDI5ZWExNzRjNGY1MDQ4YTMwOGRhNzg0ZGE4ODQ2ZDA4YjJhZWM=
+        base64-secret: MmRiZGU4ZWY0ZjMwZGQ5YjdhNmI3ZjBhNWI3MGFlYWM5YjRkNDhmNDUzNjE5MzZhYmFkMjE2Y2RjYjA5MjM2MGZlNThkMjk1NjI3MjE0ZWUwNWQ0MDVkNzJiMzI0ZWE5NmRjMDVmZjZhZDFkYTI3OTk4YzExYzhjODY0YTE2YmI=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
